@@ -18,7 +18,7 @@ const Game = () => {
 
       <div className="game-container">
         <GameCanvas />
-        <GameOver />
+        {/* <GameOver /> */}
       </div>
 
       <div className="game-controls">

@@ -1,12 +1,14 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useGameLogic } from '../../hooks/useGameLogic';
 import { GAME_CONFIG } from '../../config/gameConfig';
 import './GameCanvas.css';
+import GameOver from '../GameOver/GameOver';
 
 const GameCanvas = () => {
   const canvasRef = useRef(null);
   const animationIdRef = useRef(null);
   const lastTimeRef = useRef(0);
+  const [showGameOver, setShowGameOver] = useState(false);
   
   const {
     gameState,
@@ -17,8 +19,17 @@ const GameCanvas = () => {
     cameraShake,
     updateShieldAngle,
     shieldAngleRef,
-    update
+    restartGame,
+    update,
   } = useGameLogic();
+
+  useEffect(() => {
+        console.log(gameState.gameOver);
+        if (gameState.gameOver) {
+            console.log(gameState.gameOver);
+            setShowGameOver(true);
+        }
+    }, [gameState.gameOver]);
 
   // Mouse tracking
   useEffect(() => {
@@ -159,6 +170,16 @@ const GameCanvas = () => {
         className="game-canvas"
         />
 
+        {showGameOver && (
+            <GameOver
+            score={gameState.score}
+            wave={gameState.wave}
+            onRestart={() => {
+                setShowGameOver(false);
+                restartGame();
+            }}
+          />
+        )}
     </>
   );
 };
