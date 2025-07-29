@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { GAME_CONFIG } from '../config/gameConfig';
 import { checkShieldCollision, checkOrbCollision, createParticles, spawnBullet } from '../utils/gameUtils';
+import { soundManager } from '../utils/soundManager';
 
 
 export const useGameLogic = () => {
@@ -132,10 +133,12 @@ export const useGameLogic = () => {
                 bullet.y += bullet.vy * dt;
 
                 // Check collisions
-                if (checkShieldCollision(bullet, shieldRef.current, shieldAngleRef.current, selectedElementRef.current, orb)) {
+                if (checkShieldCollision(bullet, shieldRef.current, shieldAngleRef.current, selectedElementRef.current, orb)) { // deflect bullet
+                    soundManager.playRandomDeflect();
                     newParticles.push(...createParticles(bullet.x, bullet.y, GAME_CONFIG.SHIELD_COLOR));
                     scoreIncrease += 10;
-                } else if (checkOrbCollision(bullet, orb)) {
+                } else if (checkOrbCollision(bullet, orb)) { // hit orb
+                    soundManager.playRandomHit();
                     newParticles.push(...createParticles(bullet.x, bullet.y, GAME_CONFIG.BULLET_COLOR, 8));
                     livesDecrease++;
                     addShake();

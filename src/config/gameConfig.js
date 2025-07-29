@@ -30,13 +30,13 @@ export const GAME_CONFIG = {
     BULLET_TRAIL_COLOR: 'rgba(255, 68, 68, 0.3)',
 
     // Game settings
-    INITIAL_LIVES: 300,
+    INITIAL_LIVES: 1,
     BULLETS_PER_WAVE: 10,
     WAVE_SPAWN_DELAY: 1, // seconds between bullet spawns
     WAVE_INTERVAL: 5, // seconds between waves
-    DIFFICULTY_INCREASE: 6, // speed increase per wave (pixels per second)
+    DIFFICULTY_INCREASE: 30, // speed increase per wave (pixels per second)
 
-    // Visual effects
+    // Visual effects`
     PARTICLE_COUNT: 5,
     SHAKE_INTENSITY: 8,
     SHAKE_DURATION: 10,

@@ -3,6 +3,7 @@ import { useGameLogic } from '../../hooks/useGameLogic';
 import { GAME_CONFIG, ELEMENTS } from '../../config/gameConfig';
 import './GameCanvas.css';
 import GameOver from '../GameOver/GameOver';
+import { soundManager } from '../../utils/soundManager';
 
 const GameCanvas = () => {
   const canvasRef = useRef(null);
@@ -32,6 +33,10 @@ const GameCanvas = () => {
         }
     }, [gameState.gameOver]);
 
+
+    useEffect(() => {
+        soundManager.startMusic();
+    }, []);
 
   // Mouse tracking
     useEffect(() => {

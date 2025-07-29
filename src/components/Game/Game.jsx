@@ -1,11 +1,13 @@
 import React from 'react';
 import GameCanvas from '../GameCanvas/GameCanvas';
-
+import { soundManager } from '../../utils/soundManager';
 import GameOver from '../GameOver/GameOver';
 import './Game.css';
 
 
 const Game = () => {
+
+    
   return (
     <div className="game-wrapper">
       <div className="game-header">
@@ -18,7 +20,7 @@ const Game = () => {
 
       <div className="game-container">
         <GameCanvas />
-        {/* <GameOver /> */}
+         {/* TODO: Add Instructions beside the game canvas */}
       </div>
 
       <div className="game-controls">

@@ -1,7 +1,8 @@
-
 import './GameOver.css';
+import { soundManager } from '../../utils/soundManager';
 
 const GameOver = ({ score, wave, onRestart }) => {
+  soundManager.playDeath();
   return (
     <div className="game-over-overlay">
       <div className="game-over-modal">
