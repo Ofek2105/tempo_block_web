@@ -1,11 +1,11 @@
-import { GAME_CONFIG } from '../config/gameConfig';
+import { GAME_CONFIG, ELEMENTS } from '../config/gameConfig';
 
-export const checkShieldCollision = (bullet, shield, shieldAngle, orb) => {
+export const checkShieldCollision = (bullet, shield, shieldAngle, shieldColor, orb) => {
     const dx = bullet.x - shield.x;
     const dy = bullet.y - shield.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance <= shield.radius + bullet.radius && distance >= orb.radius) {
+    // console.log(shieldColor, bullet.colorName);
+    if (distance <= shield.radius + bullet.radius && distance >= orb.radius && shieldColor === bullet.colorName) {
         // Check if bullet is within shield arc
         const bulletAngle = Math.atan2(dy, dx);
         let angleDiff = bulletAngle - shieldAngle;
@@ -51,12 +51,19 @@ export const spawnBullet = (orb, wave) => {
     const startX = orb.x - direction.x * spawnDistance;
     const startY = orb.y - direction.y * spawnDistance;
 
+    const keys = Object.keys(ELEMENTS);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    const element = ELEMENTS[randomKey];
+
     return {
         x: startX,
         y: startY,
         vx: direction.x * speed,
         vy: direction.y * speed,
         radius: GAME_CONFIG.BULLET_RADIUS,
-        trail: []
+        trail: [],
+        colorName: element.name,
+        colorValue: element.bulletColor,
+        trailColorValue: element.bulletTrailColor,
     };
 };

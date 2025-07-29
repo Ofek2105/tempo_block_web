@@ -19,13 +19,15 @@ export const useGameLogic = () => {
         radius: GAME_CONFIG.ORB_RADIUS
     });
 
-    const [shield, setShield] = useState({
+    const shieldRef = useRef({
         x: GAME_CONFIG.CANVAS_WIDTH / 2,
         y: GAME_CONFIG.CANVAS_HEIGHT / 2,
         radius: GAME_CONFIG.SHIELD_RADIUS,
-        angle: 0,
         arcSize: GAME_CONFIG.SHIELD_ARC_DEGREES * Math.PI / 180
     });
+
+    const selectedElementRef = useRef(GAME_CONFIG.DEFAULT_ELEMENT);
+
 
     const [bullets, setBullets] = useState([]);
     const [particles, setParticles] = useState([]);
@@ -39,11 +41,31 @@ export const useGameLogic = () => {
     const lastTimeRef = useRef(0);
     const bulletsRef = useRef([]);
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            const key = e.key.toUpperCase();
+            const newElement = {
+                Q: 'fire',
+                W: 'water',
+                E: 'earth',
+                R: 'air'
+            }[key];
+
+            if (newElement) {
+                console.log(`Element changed to ${newElement}`);
+                selectedElementRef.current = newElement;
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const updateShieldAngle = useCallback((mouseX, mouseY) => {
-        const dx = mouseX - shield.x;
-        const dy = mouseY - shield.y;
+        const dx = mouseX - shieldRef.current.x;
+        const dy = mouseY - shieldRef.current.y;
         shieldAngleRef.current = Math.atan2(dy, dx);
-    }, [shield.x, shield.y]);
+    }, [shieldRef.current.x, shieldRef.current.y]);
 
     const addShake = useCallback((intensity = GAME_CONFIG.SHAKE_INTENSITY) => {
         setCameraShake({
@@ -110,7 +132,7 @@ export const useGameLogic = () => {
                 bullet.y += bullet.vy * dt;
 
                 // Check collisions
-                if (checkShieldCollision(bullet, shield, shieldAngleRef.current, orb)) {
+                if (checkShieldCollision(bullet, shieldRef.current, shieldAngleRef.current, selectedElementRef.current, orb)) {
                     newParticles.push(...createParticles(bullet.x, bullet.y, GAME_CONFIG.SHIELD_COLOR));
                     scoreIncrease += 10;
                 } else if (checkOrbCollision(bullet, orb)) {
@@ -177,17 +199,18 @@ export const useGameLogic = () => {
             }
             return { x: 0, y: 0, intensity: 0, duration: 0 };
         });
-    }, [gameState.gameOver, gameState.paused, gameState.wave, shield, orb, bullets.length, addShake]);
+    }, [gameState.gameOver, gameState.paused, gameState.wave, shieldRef.current, orb, bullets.length, addShake]);
 
     return {
         gameState,
         orb,
-        shield,
+        shield: shieldRef,
         bullets,
         particles,
         cameraShake,
         updateShieldAngle,
         shieldAngleRef,
+        selectedElementRef,
         restartGame,
         update,
         lastTimeRef
