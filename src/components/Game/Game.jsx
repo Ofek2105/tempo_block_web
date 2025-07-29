@@ -18,15 +18,25 @@ const Game = () => {
       {/* Ad Space */}
       <div className="ad-space">Advertisement Space - 728x90</div>
 
-      <div className="game-container">
-        <GameCanvas />
-         {/* TODO: Add Instructions beside the game canvas */}
+      <div className="game-play-area">
+        <div className="game-container">
+            <GameCanvas />
+        </div>
+        <div className="game-instructions">
+            <h2>Instructions</h2>
+            <ul>
+            <li><strong>Q</strong> – Fire Element <span style={{ color: 'red' }}>(Red)</span></li>
+            <li><strong>W</strong> – Water Element <span style={{ color: 'lightblue' }}>(Blue)</span></li>
+            <li><strong>E</strong> – Earth Element <span style={{ color: '#a0522d' }}>(Brown)</span></li>
+            <li><strong>R</strong> – Air Element <span style={{ color: 'white' }}>(White)</span></li>
+            <li>Move the mouse to rotate the shield</li>
+            </ul>
+        </div>
       </div>
-
-      <div className="game-controls">
+      {/* <div className="game-controls">
         <p><strong>Controls:</strong> Move your mouse to aim the shield and protect the orb from incoming projectiles</p>
         <p>Survive as long as possible as waves become increasingly intense</p>
-      </div>
+      </div> */}
 
       {/* Another Ad Space */}
       <div className="ad-space">Advertisement Space - 728x90</div>
